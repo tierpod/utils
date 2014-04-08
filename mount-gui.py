@@ -4,7 +4,7 @@
 from os.path import exists
 from os import mkdir
 from sys import exit
-from subprocess import call, check_output
+from subprocess import call, check_output, CalledProcessError
 
 def check_dir(dir):
 	"""Already mounted? /etc/mtab
@@ -45,16 +45,20 @@ def parse_fstab():
 def main():
 	"""Parse fstab, enter password, mount drives"""
 	drives = parse_fstab()
-	for drive in drives:
-		if not check_dir(drive[1]):
-			try:
-				pwd = check_output("zenity --password --title 'Введите пароль'", shell=True).strip()
-			except subprocess.CalledProcessError:
-				exit(1)
-			mount_dir(pwd, drive[0], drive[1])
-		else:
-			call("notify-send -i 'gtk-info' 'Mount' 'Диск уже подключен'", shell=True)
-			exit(2)
+	if drives:
+		for drive in drives:
+			if not check_dir(drive[1]):
+				try:
+					pwd = check_output("zenity --password --title 'Введите пароль'", shell=True).strip()
+				except CalledProcessError:
+					exit(1)
+				mount_dir(pwd, drive[0], drive[1])
+			else:
+				call("notify-send -i 'gtk-info' 'Mount' 'Диск уже подключен'", shell=True)
+				exit(2)
+	else:
+		call("notify-send -i 'gtk-info' 'Mount' 'Не настроен /etc/fstab'", shell=True)
+		exit(0)
 
 if __name__ == "__main__":
 	main()
