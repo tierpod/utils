@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for arg
+do
+	convert -density 200 "$arg" "$arg.jpg"
+	#convert -page A3 "$arg" "$arg.jpg"
+	gdialog --title "Convert PDF to JPG" --msgbox "File $arg converted" 200 200
+done
