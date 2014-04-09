@@ -32,3 +32,11 @@
 
 ## xfce-switch-theme.sh
 
+## nautilus-scripts
+Скрипты для nautilus (после установки появляются в nautilus по правой кнопке мыши - сценарии)
+
+Установить все скрипты:
+```shell
+cd nautilus-scripts
+for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.gnome2/nautilus-scripts/"; done
+```
