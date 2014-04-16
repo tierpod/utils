@@ -31,20 +31,24 @@ NO_COLOR='\e[0m'
 
 dpkg --get-selections > $HOME/Backup/installed-packages.txt
 
+function info() {
+	echo -e "$INFO_COLOR*$NO_COLOR $1"
+}
+
 function make_archive {
-	echo -e "${INFO_COLOR} * Create archive $ARC_FILE ${NO_COLOR}"
-	tar -cjf $ARC_FILE $INCLUDE && echo "OK $ARC_FILE $(du -sh $ARC_FILE | awk '{print $1}')"
+	info "Create archive $ARC_FILE"
+	tar -cjf $ARC_FILE $INCLUDE && info "$ARC_FILE $(du -sh $ARC_FILE | awk '{print $1}')"
 }
 
 case "$1" in
 	--password|-p)
-		echo -e "${INFO_COLOR} * Enable password protection archive ${NO_COLOR}"
+		info "Enable password protection archive"
 		read -s -p "Enter password: " password
 		echo ""
 		make_archive
-		echo -e "${INFO_COLOR} * Create password protection archive $ARC_FILE_P $(du -sh $ARC_FILE | awk '{print $1}') ${NO_COLOR}"
+		info "Create password protection archive $ARC_FILE_P $(du -sh $ARC_FILE | awk '{print $1}')"
 		7z a -p$password -mhe=on -mx=0 $ARC_FILE_P $ARC_FILE
-		echo -e "${INFO_COLOR} * Delete archive $ARC_FILE"
+		info "Delete archive"
 		rm $ARC_FILE
 		;;
 	--help|-h)
