@@ -16,6 +16,7 @@ INCLUDE=" \
 	$HOME/.purple \
 	$HOME/.remmina \
 	$HOME/.ssh \
+	$HOME/.vim \
 	$HOME/.themes/Numix-old \
 	$HOME/.themes/Sky \
 	$HOME/.themes/Radiance-Blue \
