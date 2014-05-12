@@ -19,12 +19,12 @@ def check_dir(dir):
 
 def mount_dir(pwd, src, dst):
 	"""Mount drives
-	Exit codes: 0 - success, 32 - mount error
+	Exit codes: 32 - mount error
 	"""
 	returncode = call('PASSWD={0} mount.cifs {1} {2}'.format(pwd, src, dst), shell=True)
 	if returncode == 0:
 		call("notify-send -i 'gtk-ok' 'Mount' 'Диск {0} подключен успешно'".format(dst), shell=True)
-		exit(0)
+		return True
 	else:
 		call("notify-send -i 'gtk-stop' 'Mount' 'Диск {0} не подключен'".format(dst), shell=True)
 		exit(32)
@@ -45,13 +45,15 @@ def parse_fstab():
 def main():
 	"""Parse fstab, enter password, mount drives"""
 	drives = parse_fstab()
+	pwd = ""
 	if drives:
 		for drive in drives:
 			if not check_dir(drive[1]):
-				try:
-					pwd = check_output("zenity --password --title 'Введите пароль'", shell=True).strip()
-				except CalledProcessError:
-					exit(1)
+				if not pwd:
+					try:
+						pwd = check_output("zenity --password --title 'Введите пароль'", shell=True).strip()
+					except CalledProcessError:
+						exit(1)
 				mount_dir(pwd, drive[0], drive[1])
 			else:
 				call("notify-send -i 'gtk-info' 'Mount' 'Диск уже подключен'", shell=True)
