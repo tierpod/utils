@@ -45,3 +45,7 @@ for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.gnome2/nautilus-scripts/"; do
 
 * Рекомендуемые зависимости: pavucontrol, gtk-recordmydesktop
 
+## flags-generate.sh
+Генерирует картинки с текстом раскладок. Можно использовать в xfce, gnome и др. для отображения текущей раскладки (так называемые флаги).
+
+* Зависимости: imagemagick
