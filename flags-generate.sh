@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Original http://www.linuxhub.ru/viewtopic.php?f=23&t=459&p=1865
+# Origin: http://www.linuxhub.ru/viewtopic.php?f=23&t=459&p=1865
 # Author: ZEN
 
 # Фон изображения

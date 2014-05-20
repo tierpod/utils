@@ -45,7 +45,7 @@ def parse_fstab():
 def main():
 	"""Parse fstab, enter password, mount drives"""
 	drives = parse_fstab()
-	pwd = ""
+	pwd = ''
 	if drives:
 		for drive in drives:
 			if not check_dir(drive[1]):
