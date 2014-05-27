@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd $NAUTILUS_SCRIPT_CURRENT_URI
+filename=$(basename "$1").pdf
+
+convert "$@" "$filename" 
+zenity --info --text="Converted complete to file $filename"
+
