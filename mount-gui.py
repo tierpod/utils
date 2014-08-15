@@ -21,7 +21,7 @@ def mount_dir(pwd, src, dst):
 	"""Mount drives
 	Exit codes: 32 - mount error
 	"""
-	returncode = call('PASSWD={0} mount.cifs {1} {2}'.format(pwd, src, dst), shell=True)
+	returncode = call('PASSWD="{0}" mount.cifs {1} {2}'.format(pwd, src, dst), shell=True)
 	if returncode == 0:
 		call("notify-send -i 'gtk-ok' 'Mount' 'Диск {0} подключен успешно'".format(dst), shell=True)
 		return True
