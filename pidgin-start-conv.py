@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Thanks to seletskiy: https://github.com/seletskiy/pidgin-start-conv
 
 import sys
 import dbus
@@ -32,11 +33,6 @@ def print_buddies(buddies):
 	for buddy in buddies.values():
 		print '{0}/{1}'.format(buddy['alias'].encode('utf-8'), buddy['name'])
 
-#def search_buddies(user, buddies):
-#	for buddy in buddies.values():
-#		if user in '{0} {1}'.format(buddy['name'], buddy['alias'].encode('utf-8')):
-#			return (buddy['acc_id'], buddy['name'])
-
 def main():
 	bus = dbus.SessionBus()
 	bus_obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
@@ -60,6 +56,7 @@ def main():
 					purple.PurpleConversationNew(1, account, buddy_name)
 	else:
 		print 'Usage: pidgin-start-conv.py [-p|--print] user@contact'
+		print 'With dmenu: pidgin-start-conv.py "$(pidgin-start-conv.py -p | dmenu.xft -l 20 -i -fn \'UbuntuMono-12\')"'
 
 if __name__ == '__main__':
 	main()
