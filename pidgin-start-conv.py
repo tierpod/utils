@@ -20,7 +20,6 @@ def get_buddies(purple, accounts):
 			if not purple.PurpleBuddyIsOnline(buddy_id):
 				continue
 			buddy_name = purple.PurpleBuddyGetName(buddy_id)
-			#buddy_username = buddy_name[0:buddy_name.find('@')]
 			buddy_alias = purple.PurpleBuddyGetAlias(buddy_id)
 			buddies[buddy_name] = {
 				'acc_id': acc_id,
@@ -29,27 +28,28 @@ def get_buddies(purple, accounts):
 			}
 	return buddies
 
+def print_buddies(buddies):
+	for buddy in buddies.values():
+		print '{0} / {1}'.format(buddy['alias'].encode('utf-8'), buddy['name'])
+
 def search_buddies(user, buddies):
-#	print buddies.values()
-	for buddie in buddies.values():
-		if user in (buddie['name'], buddie['alias']):
-			print buddie['name']
-#		buddie_info = buddies[buddie]
-#		if buddie_info['name'] == user:
-#			print buddie_info['name']
-	#return buddie
-	pass
+	for buddy in buddies.values():
+		if user in '{0} {1}'.format(buddy['name'], buddy['alias'].encode('utf-8')):
+			return (buddy['acc_id'], buddy['name'])
+
+def start_conv(purple, acc_id, name):
+	purple.PurpleConversationNew(1, acc_id, name)
 	
 def main():
-	print "start program"
 	bus = dbus.SessionBus()
 	bus_obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
 	purple = dbus.Interface(bus_obj, "im.pidgin.purple.PurpleInterface")
 
 	accounts = get_accounts(purple)
 	buddies = get_buddies(purple, accounts)
-	#print buddies.values()
-	print search_buddies('kravtsov_ap', buddies)
+	print_buddies(buddies)
+	#buddy = search_buddies('Крав', buddies)
+	#purple.PurpleConversationNew(1, buddy[0], buddy[1])
 
 if __name__ == '__main__':
 	main()
