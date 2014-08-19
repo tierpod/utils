@@ -30,9 +30,16 @@ def get_buddies(purple, accounts):
 	return buddies
 
 def search_buddies(user, buddies):
-	buddie = buddies[user]
-	return buddie
-
+#	print buddies.values()
+	for buddie in buddies.values():
+		if user in (buddie['name'], buddie['alias']):
+			print buddie['name']
+#		buddie_info = buddies[buddie]
+#		if buddie_info['name'] == user:
+#			print buddie_info['name']
+	#return buddie
+	pass
+	
 def main():
 	print "start program"
 	bus = dbus.SessionBus()
@@ -41,7 +48,8 @@ def main():
 
 	accounts = get_accounts(purple)
 	buddies = get_buddies(purple, accounts)
-	print search_buddies('kravtsov_ap@taximaxim.ru', buddies)
+	#print buddies.values()
+	print search_buddies('kravtsov_ap', buddies)
 
 if __name__ == '__main__':
 	main()
