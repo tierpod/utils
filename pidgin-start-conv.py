@@ -30,26 +30,32 @@ def get_buddies(purple, accounts):
 
 def print_buddies(buddies):
 	for buddy in buddies.values():
-		print '{0} / {1}'.format(buddy['alias'].encode('utf-8'), buddy['name'])
+		print '{0}/{1}'.format(buddy['alias'].encode('utf-8'), buddy['name'])
 
-def search_buddies(user, buddies):
-	for buddy in buddies.values():
-		if user in '{0} {1}'.format(buddy['name'], buddy['alias'].encode('utf-8')):
-			return (buddy['acc_id'], buddy['name'])
+#def search_buddies(user, buddies):
+#	for buddy in buddies.values():
+#		if user in '{0} {1}'.format(buddy['name'], buddy['alias'].encode('utf-8')):
+#			return (buddy['acc_id'], buddy['name'])
 
-def start_conv(purple, acc_id, name):
-	purple.PurpleConversationNew(1, acc_id, name)
-	
 def main():
 	bus = dbus.SessionBus()
 	bus_obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
 	purple = dbus.Interface(bus_obj, "im.pidgin.purple.PurpleInterface")
-
 	accounts = get_accounts(purple)
-	buddies = get_buddies(purple, accounts)
-	print_buddies(buddies)
-	#buddy = search_buddies('Крав', buddies)
-	#purple.PurpleConversationNew(1, buddy[0], buddy[1])
+
+	if len(sys.argv) == 2:
+		if sys.argv[1] in ('-p', '--print'):
+			buddies = get_buddies(purple, accounts)
+			print_buddies(buddies)
+		else:
+			name = sys.argv[1].split('/')[1]
+			for account in accounts:
+				buddy_id = purple.PurpleFindBuddy(account, name)
+				if buddy_id:
+					buddy_name = purple.PurpleBuddyGetName(buddy_id)
+					purple.PurpleConversationNew(1, account, buddy_name)
+	else:
+		print 'Usage: pidgin-start-conv.py [-p|--print] user@contact'
 
 if __name__ == '__main__':
 	main()
