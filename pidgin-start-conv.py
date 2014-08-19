@@ -48,7 +48,11 @@ def main():
 			buddies = get_buddies(purple, accounts)
 			print_buddies(buddies)
 		else:
-			name = sys.argv[1].split('/')[1]
+			arg = sys.argv[1]
+			if arg.find('/') == -1:
+				name = arg
+			else:
+				name = arg.split('/')[1]
 			for account in accounts:
 				buddy_id = purple.PurpleFindBuddy(account, name)
 				if buddy_id:
