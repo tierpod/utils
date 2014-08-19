@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys
+import dbus
+
+def get_accounts(purple):
+	accounts = {}
+	for acc_id in purple.PurpleAccountsGetAllActive():
+		accounts[acc_id] = {
+			'name': purple.PurpleAccountGetUsername(acc_id),
+			'proto': purple.PurpleAccountGetProtocolName(acc_id)
+		}
+	return accounts
+
+def get_buddies(purple, accounts):
+	buddies = {}
+	for acc_id in accounts:
+		for buddy_id in purple.PurpleFindBuddies(acc_id, ''):
+			if not purple.PurpleBuddyIsOnline(buddy_id):
+				continue
+			buddy_name = purple.PurpleBuddyGetName(buddy_id)
+			#buddy_username = buddy_name[0:buddy_name.find('@')]
+			buddy_alias = purple.PurpleBuddyGetAlias(buddy_id)
+			buddies[buddy_name] = {
+				'acc_id': acc_id,
+				'name': buddy_name,
+				'alias': buddy_alias
+			}
+	return buddies
+
+def search_buddies(user, buddies):
+	buddie = buddies[user]
+	return buddie
+
+def main():
+	print "start program"
+	bus = dbus.SessionBus()
+	bus_obj = bus.get_object("im.pidgin.purple.PurpleService", "/im/pidgin/purple/PurpleObject")
+	purple = dbus.Interface(bus_obj, "im.pidgin.purple.PurpleInterface")
+
+	accounts = get_accounts(purple)
+	buddies = get_buddies(purple, accounts)
+	print search_buddies('kravtsov_ap@taximaxim.ru', buddies)
+
+if __name__ == '__main__':
+	main()
