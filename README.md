@@ -81,3 +81,6 @@ for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.gnome2/nautilus-scripts/"; do
 Генерирует картинки с текстом раскладок. Можно использовать в xfce, gnome и др. для отображения текущей раскладки (так называемые флаги).
 
 * Зависимости: imagemagick
+
+## kupfer-plugins
+Плагины для лаунчера kupfer (http://engla.github.io/kupfer/). Скопировать\сделать символическую ссылку в ~/.local/share/kupfer/plugins/
