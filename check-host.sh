@@ -6,7 +6,7 @@
 # Start settings
 EXEC="0"
 EXEC_CMD="echo running exec command"
-LOG_FILE="check-host.log"
+LOG_FILE="/var/log/check-host.log"
 
 # Functions
 function help() {
@@ -35,7 +35,7 @@ function check_host_exec() {
 }
 
 # Parse arguments
-while getopts "h:le" OPT; do
+while getopts ":he" OPT; do
 	case $OPT in
 		h)
 			help
@@ -54,6 +54,9 @@ done
 
 # Extract last argument
 shift $(( OPTIND - 1 )) && SERVER=$1
+echo $SERVER
+echo $EXEC
+
 
 # Main function
 if [[ -n $SERVER ]]; then

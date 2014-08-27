@@ -39,24 +39,24 @@ def main():
 	purple = dbus.Interface(bus_obj, "im.pidgin.purple.PurpleInterface")
 	accounts = get_accounts(purple)
 
-	if len(sys.argv) == 2:
-		if sys.argv[1] in ('-p', '--print'):
-			buddies = get_buddies(purple, accounts)
-			print_buddies(buddies)
-		else:
-			arg = sys.argv[1]
-			if arg.find('/') == -1:
-				name = arg
-			else:
-				name = arg.split('/')[1]
-			for account in accounts:
-				buddy_id = purple.PurpleFindBuddy(account, name)
-				if buddy_id:
-					buddy_name = purple.PurpleBuddyGetName(buddy_id)
-					purple.PurpleConversationNew(1, account, buddy_name)
-	else:
+	if sys.argv[1] in ('-p', '--print'):
+		buddies = get_buddies(purple, accounts)
+		print_buddies(buddies)
+	elif sys.argv[1] in ('-h', '--help'):
 		print 'Usage: pidgin-start-conv.py [-p|--print] user@contact'
 		print 'With dmenu: pidgin-start-conv.py "$(pidgin-start-conv.py -p | dmenu.xft -l 20 -i -fn \'UbuntuMono-12\')"'
+	else:
+		arg = sys.argv[1]
+		print arg
+		if arg.find('/') == -1:
+			name = arg
+		else:
+			name = arg.split('/')[1]
+		for account in accounts:
+			buddy_id = purple.PurpleFindBuddy(account, name)
+			if buddy_id:
+				buddy_name = purple.PurpleBuddyGetName(buddy_id)
+				purple.PurpleConversationNew(1, account, buddy_name)
 
 if __name__ == '__main__':
 	main()
