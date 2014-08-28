@@ -14,7 +14,6 @@ INCLUDE=" \
 	$HOME/.local \
 	$HOME/.mozilla \
 	$HOME/.purple \
-	$HOME/.remmina \
 	$HOME/.ssh \
 	$HOME/.vim \
 	$HOME/.themes/Numix-old \

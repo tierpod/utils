@@ -54,9 +54,6 @@ done
 
 # Extract last argument
 shift $(( OPTIND - 1 )) && SERVER=$1
-echo $SERVER
-echo $EXEC
-
 
 # Main function
 if [[ -n $SERVER ]]; then
