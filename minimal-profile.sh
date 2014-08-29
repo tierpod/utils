@@ -7,10 +7,8 @@ INCLUDE=" \
 	$(find $HOME/ -maxdepth 1 -type f -iname '.*') \
 	$HOME/.config \
 	$HOME/.ecryptfs \
-	$HOME/.fonts \
 	$HOME/.gconf \
 	$HOME/.gnome2 \
-	$HOME/.icons \
 	$HOME/.local \
 	$HOME/.mozilla \
 	$HOME/.purple \
@@ -26,6 +24,7 @@ INCLUDE=" \
 	$HOME/Install/Misc/xkb \
 	$HOME/Backup/installed-packages.txt \
 "
+EXCLUDE=".git"
 INFO_COLOR='\e[1;34m'
 NO_COLOR='\e[0m'
 
@@ -37,7 +36,7 @@ function info() {
 
 function make_archive {
 	info "Create archive $ARC_FILE"
-	tar -cjf $ARC_FILE $INCLUDE && info "$ARC_FILE $(du -sh $ARC_FILE | awk '{print $1}')"
+	tar -cj --exclude=$EXCLUDE -f $ARC_FILE $INCLUDE && info "$ARC_FILE $(du -sh $ARC_FILE | awk '{print $1}')"
 }
 
 case "$1" in
