@@ -71,7 +71,8 @@ pidgin-start-conv.py "$(pidgin-start-conv.py -p | dmenu.xft -b -l 20 -i -fn 'Ubu
 ### Установка всех скриптов
 ```bash
 cd nautilus-scripts
-for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.gnome2/nautilus-scripts/"; done
+for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.gnome2/nautilus-scripts/"; done # Ubuntu 12.04
+for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.config/caja/scripts/"; done # Linux Mate 13
 ```
 
 ## pulseaudio-combined.sh
