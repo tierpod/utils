@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DMENU_CMD="dmenu.xft -b -l 20 -nb #CECECE -sb #398ee7 -nf #212121 -sf #212121 -fn Cuprum-12"
-SUBMODULES=(pidgin desktop-files run vnc test)
+SUBMODULES=(pidgin desktop-files run clibpoard test)
 
 ACTION=$(for i in ${SUBMODULES[*]}; do echo $i; done | $DMENU_CMD)
 
@@ -16,7 +16,7 @@ case "$ACTION" in
 		dmenu_run -b -l 20 -nb '#CECECE' -sb '#398ee7' -nf '#212121' -sf '#212121' -p $ACTION
 		;;
 	${SUBMODULES[3]})
-		echo '2'
+		cat $HOME/.config/dmenu-clipboard.conf | $DMENU_CMD -p $ACTION
 		;;
 	${SUBMODULES[4]})
 		echo '3'
