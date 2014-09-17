@@ -34,7 +34,7 @@ class CopyToClipboard(Action):
 		_copy_to_clipboard(str(leaf))
 
 	def get_icon_name(self):
-		return "terminal"
+		return "edit-paste-symbolic"
 
 class Phrases(Leaf):
 	""" Leaf represent phrases saved in ~/.config/phrases.conf"""
@@ -46,7 +46,7 @@ class Phrases(Leaf):
 		yield CopyToClipboard()
 
 	def get_icon_name(self):
-		return "terminal"
+		return "edit-paste"
 
 class PhrasesSource (ToplevelGroupingSource, FilesystemWatchMixin):
 	"""Reads ~/.config/phrases.conf and creates leaves for the hosts found.
@@ -82,7 +82,7 @@ class PhrasesSource (ToplevelGroupingSource, FilesystemWatchMixin):
 		return _("Phrases as specified in ~/.config/phrases.conf")
 
 	def get_icon_name(self):
-		return "terminal"
+		return "edit-paste"
 
 	def provides(self):
 		yield Phrases
