@@ -11,9 +11,9 @@ stow dir #сделает символическую ссылку в домашн
 ## Структура
 3 директории, логически разделённые на модули. В каждом из модулей воссоздана структура каталогов, как файлы должны размещаться в домашней директории
 
-* (bin)[#bin] - поддиректория bin (исполняемые файлы, утилиты) -> ~/bin/
-* (kupfer-plugins)[#kupfer-plugins] - плагины для kupfer
-* (nautilus-scripts)[#nautilus-scripts] - скрипты для nautilus
+* [bin](#bin) - поддиректория bin (исполняемые файлы, утилиты) -> ~/bin/
+* [kupfer-plugins](#kupfer-plugins) - плагины для kupfer
+* [nautilus-scripts](#nautilus-scripts) - скрипты для nautilus
 
 # bin
 
