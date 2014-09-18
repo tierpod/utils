@@ -1,5 +1,22 @@
 # Linux утилиты
 
+## Установка
+Для установки удобнее использовать программу [stow](https://github.com/tierpod/dotfiles/wiki/stow):
+```
+sudo apt-get install stow
+cd utils.git
+stow dir #сделает символическую ссылку в домашнюю директорию
+```
+
+## Структура
+3 директории, логически разделённые на модули. В каждом из модулей воссоздана структура каталогов, как файлы должны размещаться в домашней директории
+
+* (bin)[#bin] - поддиректория bin (исполняемые файлы, утилиты) -> ~/bin/
+* (kupfer-plugins)[#kupfer-plugins] - плагины для kupfer
+* (nautilus-scripts)[#nautilus-scripts] - скрипты для nautilus
+
+# bin
+
 ## dmenu-launcher.sh
 Просто скрипт, обёртка над dmenu, позволяющая создавать подменю.
 
@@ -65,16 +82,6 @@ pidgin-start-conv.py "$(pidgin-start-conv.py -p | dmenu.xft -b -l 20 -i -fn 'Ubu
 ## xfce-switch-theme.sh
 Небольшой скрипт, позволяет переключаться между несколькими прописанными в скрипте темами xfce, xfce-notifyd, xfwm, icons. Использую, чтобы переключаться между дневной\ночной темой.
 
-## nautilus-scripts
-Скрипты для nautilus. После установки появляются в nautilus по правой кнопке мыши - сценарии.
-
-### Установка всех скриптов
-```bash
-cd nautilus-scripts
-for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.gnome2/nautilus-scripts/"; done # Ubuntu 12.04
-for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.config/caja/scripts/"; done # Linux Mate 13
-```
-
 ## pulseaudio-combined.sh
 С помощью этого метода можно записать разговоры skype или других voip клиентов. Ведётся запись как входящего с микрофона звука (ваша речь), так и исходящего со звуковой карты звука (речь собеседника).
 
@@ -87,5 +94,14 @@ for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.config/caja/scripts/"; done #
 
 * Зависимости: imagemagick
 
-## kupfer-plugins
+# nautilus-scripts
+Скрипты для nautilus. После установки появляются в nautilus по правой кнопке мыши - сценарии.
+
+## Установка всех скриптов
+```bash
+cd nautilus-scripts
+for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.gnome2/nautilus-scripts/"; done # Ubuntu 12.04
+for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.config/caja/scripts/"; done # Linux Mate 13
+```
+# kupfer-plugins
 Плагины для лаунчера kupfer (http://engla.github.io/kupfer/). Скопировать\сделать символическую ссылку в ~/.local/share/kupfer/plugins/

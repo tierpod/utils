@@ -1,0 +1,4 @@
+--verbose
+--target=/home/pod
+--ignore='README.md'
+--ignore='\..*'
