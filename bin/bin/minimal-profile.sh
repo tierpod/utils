@@ -1,6 +1,5 @@
 #!/bin/bash
 
-DST_DIR="$HOME/Backup/minimal-profile/"
 ARC_FILE="$HOME/Backup/minimal-profile.tar.bz2"
 ARC_FILE_P="$HOME/Backup/minimal-profile.7z"
 INCLUDE=" \
