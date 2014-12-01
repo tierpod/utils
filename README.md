@@ -105,3 +105,6 @@ for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.config/caja/scripts/"; done #
 ```
 # kupfer-plugins
 Плагины для лаунчера kupfer (http://engla.github.io/kupfer/). Скопировать\сделать символическую ссылку в ~/.local/share/kupfer/plugins/
+
+# resolution.sh
+Добавляет разрешение экрана, отсутвующее в списке xrandr
