@@ -11,15 +11,15 @@ tree = ET.parse('blist.xml')
 """ Sort buddy list """
 container = tree.find('blist')
 def getkey(elem):
-	return elem.attrib['name']
+    return elem.attrib['name']
 
 container[:] = sorted(container, key=getkey)
 
 """ Collapse all groups """
 if len(argv) == 2 and argv[1] in ('-c', '--collapse'):
-	contacts = tree.findall('./blist/group/setting[@name="collapsed"]')
-	for contact in contacts:
-		contact.text = '1'
+    contacts = tree.findall('./blist/group/setting[@name="collapsed"]')
+    for contact in contacts:
+        contact.text = '1'
 
 tree.write('blist_sorted.xml')
 rename('blist.xml', 'blist.xml_bak')

@@ -11,47 +11,47 @@ from kupfer.objects import Action, TextLeaf
 from kupfer import utils, plugin_support
 
 __kupfer_settings__ = plugin_support.PluginSettings(
-	{
-		"key" : "vnc_string",
-		"label" : _("VNC connection program"),
-		"type" : str,
-		"value" : "vinagre",
-	}
+    {
+        "key" : "vnc_string",
+        "label" : _("VNC connection program"),
+        "type" : str,
+        "value" : "vinagre",
+    }
 )
 
 class ConnectSSH(Action):
-	def __init__(self):
-		Action.__init__(self, _("ConnectSSH"))
+    def __init__(self):
+        Action.__init__(self, _("ConnectSSH"))
 
-	def get_description(self):
-		return _("Connect to host via ssh")
+    def get_description(self):
+        return _("Connect to host via ssh")
 
-	def item_types(self):
-		yield TextLeaf
+    def item_types(self):
+        yield TextLeaf
 
-	def activate(self, obj):
-		utils.spawn_in_terminal(['ssh', str(obj)])
-		#print obj
+    def activate(self, obj):
+        utils.spawn_in_terminal(['ssh', str(obj)])
+        #print obj
 
-	def get_icon_name(self):
-		return "terminal"
+    def get_icon_name(self):
+        return "terminal"
 
 class ConnectVNC(Action):
-	def __init__(self):
-		self.program = (__kupfer_settings__["vnc_string"])
-		Action.__init__(self, _("ConnectVNC"))
+    def __init__(self):
+        self.program = (__kupfer_settings__["vnc_string"])
+        Action.__init__(self, _("ConnectVNC"))
 
-	def get_description(self):
-		return _("Connect to host via "+self.program)
+    def get_description(self):
+        return _("Connect to host via "+self.program)
 
-	def item_types(self):
-		yield TextLeaf
+    def item_types(self):
+        yield TextLeaf
 
-	def activate(self, obj):
-		#program = (__kupfer_settings__["vnc_string"])
-		#prog_argv = utils.argv_for_commandline(self.program + " " + str(obj))
-		utils.spawn_async(['/usr/bin/vinagre', str(obj)])
-		#print prog_argv
+    def activate(self, obj):
+        #program = (__kupfer_settings__["vnc_string"])
+        #prog_argv = utils.argv_for_commandline(self.program + " " + str(obj))
+        utils.spawn_async(['/usr/bin/vinagre', str(obj)])
+        #print prog_argv
 
-	def get_icon_name(self):
-		return "preferences-desktop-remote-desktop"
+    def get_icon_name(self):
+        return "preferences-desktop-remote-desktop"
