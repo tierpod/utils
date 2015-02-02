@@ -10,7 +10,7 @@ LOG_FILE="/var/log/check-host.log"
 
 # Functions
 function help() {
-	echo "Usage: check-host.sh [-e] server"
+	echo "Usage: $0 [-e] server"
 }
 
 function check_host() {

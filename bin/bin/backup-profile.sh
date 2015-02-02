@@ -35,7 +35,7 @@ case "$1" in
 		rm $ARC_FILE
 		;;
 	--help|-h)
-		echo "Usage: minimal-profile.sh [-p|--password]"
+		echo "Usage: $0 [-p|--password]"
 		echo "Files:"
 		for FILE in $INCLUDE; do echo $FILE; done
 		;;

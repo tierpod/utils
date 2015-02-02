@@ -39,7 +39,7 @@ function primary_off {
 
 # Основная часть
 function help {
-	echo "Usage: monitors.sh [option] [--sleep]"
+	echo "Usage: $0 [option] [--sleep]"
 	echo "       option: -m, -pl, -pr, -poff, -gui ($MIRROR, $PRIMARY_LEFT, $PRIMARY_RIGHT, $PRIMARY_OFF, $GUI)"
 	echo "       switch: --sleep"
 }
