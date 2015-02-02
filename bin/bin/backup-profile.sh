@@ -1,29 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-ARC_FILE="$HOME/Backup/minimal-profile.tar.bz2"
-ARC_FILE_P="$HOME/Backup/minimal-profile.7z"
-INCLUDE=" \
-	$(find $HOME/ -maxdepth 1 -type f -iname '.*') \
-	$HOME/.config \
-	$HOME/.ecryptfs \
-	$HOME/.gconf \
-	$HOME/.gnome2 \
-	$HOME/.local \
-	$HOME/.mozilla \
-	$HOME/.purple \
-	$HOME/.ssh \
-	$HOME/.vim \
-	$HOME/.themes/Numix-old \
-	$HOME/.themes/Sky \
-	$HOME/.themes/Radiance-Blue \
-	$HOME/.themes/Radiance-LightGreen \
-	$HOME/Docs/Wiki \
-	$HOME/Programs \
-	$(ls -1 -d $HOME/Work/* | grep -v "VMs") \
-	$HOME/Install/Misc/xkb \
-	$HOME/Backup/installed-packages.txt \
-"
-EXCLUDE=".git"
+# Load options from config file
+# ARC_FILE="archive_file.tar.bz2
+# ARC_FILE_P="archive_file_with_password.7z"
+# INCLUDE="include_file"
+# EXCLUDE="exclude_file"
+
+. $HOME/.config/backup-profile.cfg
+
 INFO_COLOR='\e[1;34m'
 NO_COLOR='\e[0m'
 
@@ -58,4 +42,3 @@ case "$1" in
 		make_archive
 		;;
 esac
-
