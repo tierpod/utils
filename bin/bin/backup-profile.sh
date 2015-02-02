@@ -19,7 +19,8 @@ function info() {
 
 function make_archive {
 	info "Create archive $ARC_FILE"
-	tar -cj --exclude=$EXCLUDE -f $ARC_FILE $INCLUDE && info "$ARC_FILE $(du -sh $ARC_FILE | awk '{print $1}')"
+	tar -cj $(for i in $EXCLUDE; do echo "--exclude $i "; done) -f $ARC_FILE $INCLUDE && \
+		info "$ARC_FILE $(du -sh $ARC_FILE | awk '{print $1}')"
 }
 
 case "$1" in
