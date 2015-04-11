@@ -11,16 +11,28 @@ NMAP='/usr/bin/nmap'
 def parse_args():
     parser = argparse.ArgumentParser(description='Network scanner', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-t', '--time', help='Add time to the output', action='store_true')
+    parser.add_argument('-f', '--fabric', help='Output text in fabric-like hosts format (host1,host2)', action='store_true')
     parser.add_argument('subnet', type=str, help='Network subnet (for example 10.1.1.0/24)')
     parser.set_defaults(func=print_output)
     return parser.parse_args()
 
 def print_output(args):
     output = get_output(args)
+
+    # add time to the output
     if args.time:
-        print 'Date: {0}'.format(datetime.now())
-    for line in output:
-        print '{0} {1}'.format(line[0], line[1])
+        print('Date: {0}'.format(datetime.now()))
+
+    if args.fabric:
+        # fabric-like output format: host1,host2,host3
+        result = []
+        for line in output:
+            result.append(line[0])
+        print(','.join(result))
+    else:
+        # simple output format
+        for line in output:
+            print('{0} {1}'.format(line[0], line[1]))
 
 def get_output(args):
     try:
@@ -29,7 +41,7 @@ def get_output(args):
         output.sort()
         return output
     except:
-        return 'Error in running {0}'.format(NMAP)
+        print('Error in running {0}'.format(NMAP))
         exit(3)
 
 if __name__ == "__main__":
