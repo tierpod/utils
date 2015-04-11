@@ -1,32 +1,41 @@
 #!/usr/bin/python
 
 from datetime import datetime
-import sys, subprocess, re
+from os.path import isfile
+from sys import exit
 import argparse
+import subprocess, re
 
-def main():
+NMAP='/usr/bin/nmap'
+
+def parse_args():
     parser = argparse.ArgumentParser(description='Network scanner', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-t', '--time', help='Add time to the output', action='store_true')
     parser.add_argument('subnet', type=str, help='Network subnet (for example 10.1.1.0/24)')
-    parser.set_defaults(func=get_output)
+    parser.set_defaults(func=print_output)
+    return parser.parse_args()
 
-    args = parser.parse_args()
-    result = args.func(args)
+def print_output(args):
+    output = get_output(args)
     if args.time:
-        print datetime.now()
-    for item in result:
-        print '{0} {1}'.format(item[0], item[1])
-    if args.time:
-        print "\n"
+        print 'Date: {0}'.format(datetime.now())
+    for line in output:
+        print '{0} {1}'.format(line[0], line[1])
 
 def get_output(args):
     try:
-        cmd = subprocess.check_output('nmap -sP {0}'.format(args.subnet), stderr=subprocess.STDOUT, shell=True)
-        arr = re.findall('Nmap scan report for (.*)\n(Host is [up|down].*)\..*', cmd, re.MULTILINE)
-        arr.sort()
-        return arr
+        cmd = subprocess.check_output('{1} -sP {0}'.format(args.subnet, NMAP), stderr=subprocess.STDOUT, shell=True)
+        output = re.findall('Nmap scan report for (.*)\n(Host is [up|down].*)\..*', cmd, re.MULTILINE)
+        output.sort()
+        return output
     except:
-        return "Error in running cmd"
+        return 'Error in running {0}'.format(NMAP)
+        exit(3)
 
 if __name__ == "__main__":
-    main()
+    if isfile(NMAP):
+        args = parse_args()
+        args.func(args)
+    else:
+        print('{0} not found. First install nmap.'.format(NMAP))
+        exit(2)
