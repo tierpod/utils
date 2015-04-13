@@ -37,8 +37,8 @@ def print_output(args):
 
 def get_output(args):
     try:
-        cmd = subprocess.check_output('{1} -sP {0}'.format(args.subnet, NMAP), stderr=subprocess.STDOUT, shell=True)
-        output = re.findall('Nmap scan report for.*[\( ](\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\)?\nHost is ([up|down]+.*)', cmd, re.MULTILINE)
+        cmd = subprocess.check_output('{1} -sP -n {0}'.format(args.subnet, NMAP), stderr=subprocess.STDOUT, shell=True)
+        output = re.findall('Nmap scan report for (.*)\nHost is ([up|down].*)', cmd, re.MULTILINE)
         output.sort()
         if args.debug:
             print('DEBUG: raw subprocess output')
