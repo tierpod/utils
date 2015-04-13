@@ -12,6 +12,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Network scanner', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-t', '--time', help='Add time to the output', action='store_true')
     parser.add_argument('-f', '--fabric', help='Output text in fabric-like hosts format (host1,host2)', action='store_true')
+    parser.add_argument('-d', '--debug', help='Print raw text for debug', action='store_true')
     parser.add_argument('subnet', type=str, help='Network subnet (for example 10.1.1.0/24)')
     parser.set_defaults(func=print_output)
     return parser.parse_args()
@@ -32,13 +33,18 @@ def print_output(args):
     else:
         # simple output format
         for line in output:
-            print('{0} {1}'.format(line[0], line[1]))
+            print('{0: <16} {1}'.format(line[0], line[1]))
 
 def get_output(args):
     try:
         cmd = subprocess.check_output('{1} -sP {0}'.format(args.subnet, NMAP), stderr=subprocess.STDOUT, shell=True)
-        output = re.findall('Nmap scan report for (.*)\n(Host is [up|down].*)\..*', cmd, re.MULTILINE)
+        output = re.findall('Nmap scan report for.*[\( ](\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\)?\nHost is ([up|down]+.*)', cmd, re.MULTILINE)
         output.sort()
+        if args.debug:
+            print('DEBUG: raw subprocess output')
+            print(cmd)
+            print('DEBUG: raw output after regex and sorting')
+            print(output)
         return output
     except:
         print('Error in running {0}'.format(NMAP))
