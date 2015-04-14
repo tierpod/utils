@@ -12,6 +12,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Network scanner', formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('-t', '--time', help='Add time to the output', action='store_true')
     parser.add_argument('-f', '--fabric', help='Output text in fabric-like hosts format (host1,host2)', action='store_true')
+    parser.add_argument('-n', '--hostname', help='Show ip and hostname (do no use with -f option)', action='store_true')
     parser.add_argument('-d', '--debug', help='Print raw text for debug', action='store_true')
     parser.add_argument('subnet', type=str, help='Network subnet (for example 10.1.1.0/24)')
     parser.set_defaults(func=print_output)
@@ -37,7 +38,10 @@ def print_output(args):
 
 def get_output(args):
     try:
-        cmd = subprocess.check_output('{1} -sP -n {0}'.format(args.subnet, NMAP), stderr=subprocess.STDOUT, shell=True)
+        if args.hostname:
+            cmd = subprocess.check_output('{1} -sP {0}'.format(args.subnet, NMAP), stderr=subprocess.STDOUT, shell=True)
+        else:
+            cmd = subprocess.check_output('{1} -sP -n {0}'.format(args.subnet, NMAP), stderr=subprocess.STDOUT, shell=True)
         output = re.findall('Nmap scan report for (.*)\nHost is ([up|down].*)', cmd, re.MULTILINE)
         output.sort()
         if args.debug:
