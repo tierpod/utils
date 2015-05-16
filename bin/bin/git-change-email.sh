@@ -1,8 +1,8 @@
 #!/bin/sh
-# Изменяет во всей истории проекта OLD_EMAIL на COORECT_EMAIL
-# Осторожно! Если работу над проектом ведут несколько пользователей,
-# то может поломаться вся история - номера commit-ом изменятся!
 
+read -p 'Are you sure??? ' answer
+
+replace() {
 git filter-branch --env-filter '
 
 OLD_EMAIL="podkorytov_pm@taximaxim.ru"
@@ -17,3 +17,15 @@ then
     export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
 fi
 ' --tag-name-filter cat -- --branches --tags
+}
+
+case $answer in
+  [Yy])
+    echo 'Replace old email with current email'
+	replace
+	;;
+  *)
+    echo 'Exit'
+	;;
+esac
+

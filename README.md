@@ -6,18 +6,9 @@
 
 ```
 sudo apt-get install stow
-cd utils.git
+cd utils
 stow dir #сделает символическую ссылку в домашнюю директорию
 ```
-
-## Структура 3 директории, логически разделённые на модули.
-В каждом из модулей
-воссоздана структура каталогов, как файлы должны размещаться в домашней
-директории
-
-* [bin](#bin) - поддиректория bin (исполняемые файлы, утилиты) -> ~/bin/
-* [kupfer-plugins](#kupfer-plugins) - плагины для kupfer
-* [nautilus-scripts](#nautilus-scripts) - скрипты для nautilus
 
 # bin
 
@@ -30,30 +21,10 @@ check-host.sh [-e] server
 notify-send (если не указан параметр -e), либо выполняет комманду (переменная
 EXEC_CMD).
 
-Чтобы запускать скрипт по расписанию, нужно добавить его в cron:
-* Запускает crontab -e
-* Добавляем туда запись вида:
+Чтобы запускать скрипт по расписанию, нужно добавить его в crontab:
 
-```bash
-* * * * * /path/to/check-host.sh -e ipaddr
 ```
-
-* Сохраняемся, выходим
-
-### Примеры формата времени для cron
-
-```bash
-# .---------------- minute (0 - 59)
-# |  .------------- hour (0 - 23)
-# |  |  .---------- day of month (1 - 31)
-# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
-# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
-# |  |  |  |  |
-# *  *  *  *  * user-name  command to be executed
-
-  *  *  *  *  * #каждую минуту
- */5 *  *  *  * #каждые 5 минут
-  0 */5 *  *  * #каждые 5 часов
+* * * * * /path/to/check-host.sh -e ipaddr
 ```
 
 ## backup-profile.sh
@@ -85,7 +56,7 @@ Directory для монтирования сетевого диска.
 
 * Зависимости: zenity
 
-## nmap_scan_net.py
+## nmap-scan-net.py
 Сканирование сети на наличие сетевого оборудования (компьютеров, принтеров и
 прочего). Вызывает nmap -sP и форматирует вывод.
 
@@ -121,12 +92,6 @@ pidgin-start-conv.py "$(pidgin-start-conv.py -p | dmenu.xft -b -l 20 -i -fn 'Ubu
 
 * Рекомендуемые зависимости: pavucontrol, gtk-recordmydesktop
 
-## flags-generate.sh
-Генерирует картинки с текстом раскладок. Можно использовать в xfce, gnome и др.
-для отображения текущей раскладки (так называемые флаги).
-
-* Зависимости: imagemagick
-
 # nautilus-scripts
 Скрипты для nautilus. После установки появляются в nautilus по правой кнопке
 мыши - сценарии.
@@ -145,3 +110,9 @@ for i in *; do ln -s "$(readlink -f "$i")" "$HOME/.config/caja/scripts/"; done #
 
 # resolution.sh
 Добавляет разрешение экрана, отсутвующее в списке xrandr
+
+# git-change-email.sh
+Взято [тут](https://help.github.com/articles/changing-author-info/). Изменяет старый
+email на новый во всей истории в проекте. Использовать __крайне__ осторожно и только
+в экстренных случаях - вся совместная работа над репозеторием будет потеряна, всем
+нужно будет заново скачивать репозиторий.
