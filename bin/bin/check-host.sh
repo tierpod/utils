@@ -1,49 +1,50 @@
-#!/usr/bin/env bash
-# Try using getopts:
+#!/bin/sh
+# getopts tutorials:
 # * http://wiki.bash-hackers.org/howto/getopts_tutorial
 # * http://rsalveti.wordpress.com/2007/04/03/bash-parsing-arguments-with-getopts/
 
-# Start settings
-EXEC="0"
-EXEC_CMD="echo running exec command"
-LOG_FILE="/var/log/check-host.log"
+# Settings
+EXEC=false
+EXEC_CMD='echo service networking restart'
+LOG_FILE='check-host.log'
+SLEEP_TIME=10
+
+
 
 # Functions
-function help() {
-	echo "Usage: $0 [-e] server"
+help() {
+	echo "Usage: $0 [-e] hostname"
 }
 
-function check_host() {
-	ping -c 1 $1 > /dev/null
-	if [[ $? == 0 ]]; then
-		notify-send -i "dialog-ok-apply" "Host online" "Host $1 online"
+check_host_notify() {
+	if ping -c 1 $HOST > /dev/null; then
+		notify-send -i 'dialog-ok-apply' 'Host online' "Host $HOST online"
 		break
 	fi
 }
 
-function check_host_exec() {
+check_host_exec() {
 	DATE=$(date -R)
-	ping -c 1 $1 > /dev/null
-	if [[ $? == 0 ]]; then
-		# Пинг успешный
+	if ping -c 1 $HOST > /dev/null; then
+		# ping successfull
 		echo "$DATE ping succesfull"
 	else
-		# Пинг неудачный
+		# ping failure
 		echo "$DATE ping failure"
 		$EXEC_CMD
 	fi
 }
 
 # Parse arguments
-while getopts ":he" OPT; do
+while getopts ':he' OPT; do
 	case $OPT in
 		h)
 			help
 			exit 1
 			;;
 		e)
-			echo "Enable exec cmd"
-			EXEC=1
+			echo "Enable command execution on ping failure: $EXEC_CMD"
+			EXEC=true
 			;;
 		?)
 			help
@@ -53,16 +54,18 @@ while getopts ":he" OPT; do
 done
 
 # Extract last argument
-shift $(( OPTIND - 1 )) && SERVER=$1
+shift $(( OPTIND - 1 )) && HOST=$1
 
-# Main function
-if [[ -n $SERVER ]]; then
-	if [[ $EXEC == "0" ]]; then
-		while true; do
-			check_host $SERVER
-			sleep 60
-		done
-	else
-		check_host_exec $SERVER $EXEC_CMD >> $LOG_FILE
-	fi
+if [ -z "$HOST" ]; then
+	help
+	exit 1
 fi
+
+while true; do
+	if $EXEC; then
+		check_host_exec >> $LOG_FILE
+	else
+		check_host_notify
+	fi
+	sleep $SLEEP_TIME
+done
