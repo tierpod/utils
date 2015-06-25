@@ -36,7 +36,7 @@ def print_output(args):
             if line.startswith('Host'):
                 _line = line.split()
                 result[_line[1]] = {}
-                result[_line[1]]['hostname'] = _line[2].replace('(','').replace(')','')
+                result[_line[1]]['hostname'] = _line[2].translate(None, '()')
                 result[_line[1]]['status'] = _line[4]
         print json.dumps(result, indent=4)
     elif args.output == 'fabric':
@@ -49,7 +49,8 @@ def print_output(args):
     else:
         for line in output.split('\n'):
             if line.startswith('Host'):
-                print line
+                _line = line.split()
+                print '{0: <16} {1: <16}'.format(_line[1], _line[2].translate(None, '()'))
 
 def get_output(args):
     try:
