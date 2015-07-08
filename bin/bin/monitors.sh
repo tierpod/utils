@@ -1,72 +1,71 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-TITLE="Управление мониторами"
-GUI="Графическое меню"
-PRIMARY="DVI-I-1"
-SECONDARY="VGA-0"
+TITLE='Управление мониторами'
+GUI='Графическое меню'
+PRIMARY='DVI-I-1'
+SECONDARY='VGA-0'
 
 # Режимы
-MIRROR="Режим mirror"
-PRIMARY_LEFT="Основной монитор слева"
-PRIMARY_RIGHT="Основной монитор справа"
-PRIMARY_OFF="Выключить основной экран"
+MIRROR='Режим mirror'
+PRIMARY_LEFT='Основной монитор слева'
+PRIMARY_RIGHT='Основной монитор справа'
+PRIMARY_OFF='Выключить основной экран'
 
 # Переключение режимов
-function mirror {
+mirror() {
 	xrandr --auto
-	nofity-send -i "display" "$TITLE" "Выключен монитор: <b>$MIRROR</b>"
+	nofity-send -i 'display' "$TITLE" "Выключен монитор: <b>$MIRROR</b>"
 }
 
-function primary_left {
+primary_left() {
 	xrandr --auto
 	xrandr --output $PRIMARY --left-of $SECONDARY
 	xrandr --output $PRIMARY --primary
-	notify-send -i "display" "$TITLE" "Включен режим: <b>$PRIMARY_LEFT</b>"
+	notify-send -i 'display' "$TITLE" "Включен режим: <b>$PRIMARY_LEFT</b>"
 }
 
-function primary_right {
+primary_right() {
 	xrandr --auto
 	xrandr --output $PRIMARY --right-of $SECONDARY
 	xrandr --output $PRIMARY --primary
-	notify-send -i "display" "$TITLE" "Включен режим: <b>$PRIMARY_RIGHT</b>"
+	notify-send -i 'display' "$TITLE" "Включен режим: <b>$PRIMARY_RIGHT</b>"
 }
 
-function primary_off {
+primary_off() {
 	xrandr --auto
 	xrandr --output $PRIMARY --off
-	notify-send -i "display" "$TITLE" "Выключен монитор: <b>$PRIMARY_OFF</b>"
+	notify-send -i 'display' "$TITLE" "Выключен монитор: <b>$PRIMARY_OFF</b>"
 }
 
 # Основная часть
-function help {
+help() {
 	echo "Usage: $0 [option] [--sleep]"
-	echo "       option: -m, -pl, -pr, -poff, -gui ($MIRROR, $PRIMARY_LEFT, $PRIMARY_RIGHT, $PRIMARY_OFF, $GUI)"
-	echo "       switch: --sleep"
+	echo " option: -m, -pl, -pr, -poff, -gui ($MIRROR, $PRIMARY_LEFT, $PRIMARY_RIGHT, $PRIMARY_OFF, $GUI)"
+	echo " switch: --sleep"
 }
 
 case "$1" in
 	-m)
-		[ "$2" == "--sleep" ] && sleep 5
+		[ "$2" == '--sleep' ] && sleep 5
 		mirror
 		;;
 	-pl)
-		[ "$2" == "--sleep" ] && sleep 5
+		[ "$2" == '--sleep' ] && sleep 5
 		primary_left
 		;;
 	-pr)
-		[ "$2" == "--sleep" ] && sleep 5
+		[ "$2" == '--sleep' ] && sleep 5
 		primary_right
 		;;
 	-poff)
-		[ "$2" == "--sleep" ] && sleep 5
+		[ "$2" == '--sleep' ] && sleep 5
 		primary_off
 		;;
 	-gui)
 		MODE=$(zenity --list --title="$TITLE" \
 			--text="Основной: <b>$PRIMARY</b>, дополнительный: <b>$SECONDARY</b>\nВыберите режим работы" \
-			--column="№" --column="Режимы работы" \
-			"1" "$MIRROR" "2" "$PRIMARY_LEFT" "3" "$PRIMARY_RIGHT" "4" "$PRIMARY_OFF")
-		#echo $MODE
+			--column='№' --column='Режимы работы' \
+			'1' "$MIRROR" '2' "$PRIMARY_LEFT" '3' "$PRIMARY_RIGHT" '4' "$PRIMARY_OFF")
 		case "$MODE" in
 			1) mirror ;;
 			2) primary_left ;;

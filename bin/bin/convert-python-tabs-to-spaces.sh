@@ -1,21 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-function convert() {
-	find -name "*.py" -print | xargs -n 1 sed -i 's/\t/    /g'
+convert() {
+	find -name '*.py' -print | xargs -n 1 sed -i 's/\t/    /g'
 }
 
-read -p "Convert all *.py tabs to spaces? " yn
+read -p 'Convert all *.py tabs to spaces? ' answer
 
-case $yn in
+case "$answer" in
 	[Yy]*)
+		echo 'Convert tabs to spaces'
 		convert
 		;;
-	[Nn]*)
-		echo "Exit without convert"
-		exit 0
-		;;
 	*)
-		echo "Unknow answer: Y or N"
+		echo 'Exit without convert'
 		exit 1
 		;;
 esac

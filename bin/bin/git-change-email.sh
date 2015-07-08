@@ -5,7 +5,7 @@ read -p 'Are you sure??? ' answer
 replace() {
 git filter-branch --env-filter '
 
-OLD_EMAIL="podkorytov_pm@taximaxim.ru"
+OLD_EMAIL=""
 CORRECT_EMAIL="pod.pavel@gmail.com"
 
 if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]
