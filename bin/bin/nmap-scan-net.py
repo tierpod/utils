@@ -1,11 +1,10 @@
 #!/usr/bin/python
 
-from datetime import datetime
 from os.path import isfile
 from sys import exit
 import argparse
-import subprocess
 import json
+import subprocess
 
 NMAP='/usr/bin/nmap'
 
