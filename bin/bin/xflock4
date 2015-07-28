@@ -1,0 +1,22 @@
+#!/bin/sh
+
+PATH=$HOME/bin/:/bin:/usr/bin
+export PATH
+
+# Change kurrent layout
+xkb-switch -s us
+
+# Lock screen with slock (suckless-tools)
+LOCK_CMD='slock'
+
+if command -v -- $LOCK_CMD >/dev/null 2>&1; then
+    $LOCK_CMD >/dev/null 2>&1 &
+    # turn off display backlight
+    xset dpms force off
+    # remove all ssh keys from ssh-agent
+    [ "$1" = '-s' ] && ssh-add -D
+    exit
+fi
+
+# else access locking failed
+exit 1
