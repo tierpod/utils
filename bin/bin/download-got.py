@@ -42,5 +42,6 @@ def download_file(url, directory):
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print('Usage: download-got.py /output/directory http://url/season1')
+        print __doc__
     else:
         main()
