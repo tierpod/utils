@@ -14,7 +14,7 @@ Usage:
 import sys
 import datetime
 
-if sys.argv[1] in ('-h', '--help'):
+if len(sys.argv) > 1:
     print(__doc__)
     exit()
 
