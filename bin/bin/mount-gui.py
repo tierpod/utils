@@ -19,14 +19,18 @@ class MountGui:
     ZENITY = '/usr/bin/zenity'
     drives = []
     password = ''
+    username = ''
 
     def __init__(self):
         if not os.path.exists(self.MOUNTCIFS):
-            exit('{0} not found. Please install cifs-utils package'.format(self.MOUNTCIFS))
+            exit('{0} not found. Please install cifs-utils package.'.format(self.MOUNTCIFS))
         if not os.path.exists(self.ZENITY):
-            exit('{0} not found. Please install zenity package'.format(self.ZENITY))
+            exit('{0} not found. Please install zenity package.'.format(self.ZENITY))
 
         self.drives = self.parse_fstab()
+        for username in self.drives[0][3].split(','):
+            if username.startswith('username'):
+                self.username = username.split('=')[1]
 
         if self.drives:
             for drive in self.drives:
@@ -35,7 +39,7 @@ class MountGui:
                 if self.is_mounted(dest):
                     exit(2)
         else:
-            sys.exit('Cifs shares not found in /etc/fstab')
+            sys.exit('Cifs shares not found in /etc/fstab.')
 
         self.password = self.get_password()
 
@@ -44,7 +48,7 @@ class MountGui:
 
     def get_password(self):
         password = subprocess.check_output(['zenity', '--password', '--title',
-            'Введите пароль']).strip()
+            '{0}'.format(self.username)]).strip()
         return password
 
     def parse_fstab(self):
