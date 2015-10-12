@@ -41,11 +41,11 @@ class MountGuiWindow(Gtk.Window):
             sys.exit(1)
 
         self.DISKS = self.parse_fstab()
-        for field in self.DISKS[0][2].split(','):
-            if field.startswith('username='):
-                self.USERNAME = field.split('=')[1]
 
         if self.DISKS:
+            for field in self.DISKS[0][2].split(','):
+                if field.startswith('username='):
+                    self.USERNAME = field.split('=')[1]
             for disk in self.DISKS:
                 dest = disk[1]
                 self.create_dir(dest)
@@ -180,7 +180,11 @@ class MountGuiWindow(Gtk.Window):
                 if 'cifs' in line and not line.startswith('#'):
                     line_splitted = line.strip().split()
                     disks.append([line_splitted[0], line_splitted[1], line_splitted[3]])
-        return disks
+
+        if len(disks) == 0:
+            return False
+        else:
+            return disks
 
     def create_dir(self, directory):
         """Create destination directory if does not exist"""
