@@ -17,5 +17,5 @@ else:
     data = sys.stdin.readlines()
 
 for input_line in data:
-    line = input_line.lower().translate(None, ' :.\n')
+    line = input_line.lower().translate(None, ' :.-\n')
     print ':'.join([line[i:i+N] for i in range(0, len(line), N)])
