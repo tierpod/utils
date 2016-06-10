@@ -1,7 +1,6 @@
 #!/bin/sh
 
-PATH=$HOME/bin/:/bin:/usr/bin
-export PATH
+export PATH=$HOME/bin/:/bin:/usr/bin
 
 # Change kurrent layout
 xkb-switch -s us

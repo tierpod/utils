@@ -1,17 +1,33 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
-case "$1" in
+set -e
+
+usage() {
+	cat << USAGE
+Mount first vfat volume on raw dd image
+
+Usage: $(basename $0) [-m|--mount] | [-u|--umount] /path/to/file.img
+USAGE
+}
+
+ARGUMENT=$1
+PATH=$2
+
+case "$ARGUMENT" in
 	-h|--help)
-		echo "$0: mount first vfat volume on raw dd image"
-		echo "Usage: $0 [-u|--umount] ]/path/to/file.img"
+		usage
+		exit 0
 		;;
 	-u|--umount)
 		sudo umount /mnt && echo "Unmounted" || echo "Error"
 		;;
-	*)
-		FILENAME=$(basename $1)
-		VFAT=$(fdisk -l $1 | grep FAT32 | head -1 | awk '{print $3}')
+	-m|--mount)
+		VFAT=$(fdisk -l $PATH | grep FAT32 | head -1 | awk '{print $3}')
 		VFAT_OFFSET=$(( $VFAT *512 ))
-		sudo mount -o loop,offset=$VFAT_OFFSET -t vfat $1 /mnt && echo "$1 mounted to /mnt" || echo "Error $1"
+		sudo mount -o loop,offset=$VFAT_OFFSET -t vfat $PATH /mnt && echo "$PATH mounted to /mnt" || echo "Error while mounting $PATH"
+		;;
+	*)
+		usage
+		exit 1
 		;;
 esac
