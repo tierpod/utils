@@ -17,5 +17,9 @@ API_URL = 'https://www.macvendorlookup.com/api/v2'
 URL = '%s/%s' % (API_URL, sys.argv[1])
 
 print 'Request url: %s' % URL
-r = requests.get(URL)
-print json.dumps(json.loads(r.text), indent=4)
+r = requests.get(URL, verify=False)
+
+if r.text =!= '':
+    print 'Vendor not found by mac: {0}'.format(sys.argv[1])
+else:
+    print json.dumps(json.loads(r.text), indent=4)
