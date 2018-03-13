@@ -14,6 +14,12 @@ import sys
 N = 2
 
 def mac_normalize(mac):
+    # check symbols
+    try:
+        mac = mac.decode()
+    except UnicodeDecodeError:
+        print 'Error: mac address contains none-ascii symbols'
+        exit(1)
     raw_mac = mac.lower().translate(None, ' :.-\n')
     # check length
     if len(raw_mac) != 12:
