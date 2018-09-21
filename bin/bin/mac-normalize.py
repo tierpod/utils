@@ -1,45 +1,71 @@
-#!/usr/bin/env python
+#!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Normalize mac address to format: 'ff:ff:ff:ff:ff:ff'
+"""
 
-Examples:
-mac-normalize.py MAC_ADDRESS
-echo 'MAC_ADDRESS' | mac-normalize.py
-'''
-
+import argparse
+import re
 import sys
 
 N = 2
-
-def mac_normalize(mac):
-    # check symbols
-    try:
-        mac = mac.decode()
-    except UnicodeDecodeError:
-        print 'Error: mac address contains none-ascii symbols'
-        exit(1)
-    raw_mac = mac.lower().translate(None, ' :.-\n')
-    # check length
-    if len(raw_mac) != 12:
-        print 'Error: wrong input length: {0} {1}/16'.format(raw_mac, len(raw_mac))
-        exit(1)
-    list_mac = [raw_mac[i:i+N] for i in range(0, len(raw_mac), N)]
-    # check elements in list
-    for elem in list_mac:
-        try:
-            int(elem, 16)
-        except ValueError:
-            print 'Error: wrong element in mac: {0} {1}'.format(elem, raw_mac)
-            exit(2)
-    return ':'.join([raw_mac[i:i+N] for i in range(0, len(raw_mac), N)])
+RE_VALIDATE = re.compile(r"[a-zA-Z0-9]{12}")
 
 
-if len(sys.argv) == 2:
-    data = sys.argv[1].split('\n')
-    for input_line in data:
-        print mac_normalize(input_line)
-else:
-    print __doc__.strip()
+def normalize(s):
+    mac = s.lower()
+    mac = mac.translate(None, ".-_: \n")
+    validate(mac)
 
+    items = [mac[i:i+N] for i in range(0, len(mac), N)]
+
+    for i in items:
+        int(i, 16)
+    return ":".join(items)
+
+
+def validate(s):
+    """Checks if `s` contains wrong symbols.
+
+    >>> validate("0a1b2c3d4x5z")
+    True
+    >>> validate("0")
+    Traceback (most recent call last):
+    ...
+    ValueError: too few symbols
+    >>> validate("0а1б2ц334455")
+    Traceback (most recent call last):
+    ...
+    ValueError: wrong symbols
+    """
+
+    if len(s) < 12:
+        raise ValueError("too few symbols")
+
+    if not RE_VALIDATE.match(s):
+        raise ValueError("wrong symbols")
+
+    return True
+
+
+def parse_args():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("-i", action="store_true", help="read from stdin")
+    p.add_argument("ADDRS", metavar="MAC", nargs="*", help="mac addresses")
+    return p.parse_args()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+
+    macs = []
+
+    if args.i:
+        for line in sys.stdin:
+            macs.append(line.strip())
+
+    macs.extend(args.ADDRS)
+
+    for m in macs:
+        print normalize(m)
