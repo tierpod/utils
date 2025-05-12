@@ -1,6 +1,4 @@
-#!/usr/bin/python2
-# -*- coding: utf-8 -*-
-
+#!/usr/bin/env python3
 """
 Normalize mac address to format: 'ff:ff:ff:ff:ff:ff'
 """
@@ -15,7 +13,8 @@ RE_VALIDATE = re.compile(r"[a-zA-Z0-9]{12}")
 
 def normalize(s):
     mac = s.lower()
-    mac = mac.translate(None, ".-_: \n")
+    for char in ".-_: \n":
+        mac = mac.replace(char, "")
     validate(mac)
 
     items = [mac[i:i+N] for i in range(0, len(mac), N)]
@@ -68,4 +67,4 @@ if __name__ == "__main__":
     macs.extend(args.ADDRS)
 
     for m in macs:
-        print normalize(m)
+        print(normalize(m))
